@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delivery Time Prediction</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Delivery Time Prediction</h1>
+        <p class="text-muted">
+            Enter delivery details to predict the estimated delivery time.
+        </p>
+    </div>
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body p-4 p-md-5">
+
+            <form id="predictionForm">
+
+                <div class="row g-4">
+
+                    <!-- Delivery Person Age -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Delivery Person Age
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="age"
+                            placeholder="Example: 25"
+                            min="1"
+                            required
+                        >
+                    </div>
+
+
+                    <!-- Delivery Person Rating -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Delivery Person Rating
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="rating"
+                            placeholder="Example: 4.5"
+                            min="1"
+                            max="5"
+                            step="0.1"
+                            required
+                        >
+                    </div>
+
+
+                    <!-- Distance -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Distance (km)
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="distance"
+                            placeholder="Example: 5.2"
+                            min="0.1"
+                            max="19.9"
+                            step="0.1"
+                            required
+                        >
+                    </div>
+
+
+                    <!-- Order Hour -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Order Hour
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="order_hour"
+                            placeholder="0 - 23"
+                            min="0"
+                            max="23"
+                            required
+                        >
+                    </div>
+
+
+                    <!-- Weather -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Weather Conditions
+                        </label>
+
+                        <select class="form-select" id="weather" required>
+                            <option value="">Select weather</option>
+                            <option value="Fog">Fog</option>
+                            <option value="Stormy">Stormy</option>
+                            <option value="Cloudy">Cloudy</option>
+                            <option value="Sandstorms">Sandstorms</option>
+                            <option value="Windy">Windy</option>
+                            <option value="Sunny">Sunny</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Traffic -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Road Traffic Density
+                        </label>
+
+                        <select class="form-select" id="traffic" required>
+                            <option value="">Select traffic</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Jam">Jam</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Vehicle Condition -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Vehicle Condition
+                        </label>
+
+                        <select class="form-select" id="vehicle_condition" required>
+                            <option value="">Select condition</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Type of Order -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Type of Order
+                        </label>
+
+                        <select class="form-select" id="type_of_order" required>
+                            <option value="">Select order type</option>
+                            <option value="Drinks">Drinks</option>
+                            <option value="Meal">Meal</option>
+                            <option value="Snack">Snack</option>
+                            <option value="Buffet">Buffet</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Type of Vehicle -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Type of Vehicle
+                        </label>
+
+                        <select class="form-select" id="type_of_vehicle" required>
+                            <option value="">Select vehicle</option>
+                            <option value="motorcycle">Motorcycle</option>
+                            <option value="scooter">Scooter</option>
+                            <option value="electric_scooter">Electric Scooter</option>
+                            <option value="bicycle">Bicycle</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Multiple Deliveries -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Multiple Deliveries
+                        </label>
+
+                        <select class="form-select" id="multiple_deliveries" required>
+                            <option value="">Select number</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Festival -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Festival
+                        </label>
+
+                        <select class="form-select" id="festival" required>
+                            <option value="">Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+
+                    <!-- City -->
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            City
+                        </label>
+
+                        <select class="form-select" id="city" required>
+                            <option value="">Select city type</option>
+                            <option value="Metropolitian">Metropolitian</option>
+                            <option value="Urban">Urban</option>
+                            <option value="Semi-Urban">Semi-Urban</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <!-- Predict Button -->
+                <div class="text-center mt-5">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg px-5"
+                        id="predictBtn"
+                    >
+                        Predict Delivery Time
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- Loading -->
+            <div
+                id="loading"
+                class="text-center mt-4 d-none"
+            >
+                <div
+                    class="spinner-border text-primary"
+                    role="status"
+                ></div>
+
+                <p class="mt-2">
+                    Predicting delivery time...
+                </p>
+            </div>
+
+
+            <!-- Error -->
+            <div
+                id="errorMessage"
+                class="alert alert-danger mt-4 d-none"
+            ></div>
+
+
+            <!-- Result -->
+            <div
+                id="result"
+                class="result-box text-center mt-5 d-none"
+            >
+
+                <h4 class="text-muted">
+                    Estimated Delivery Time
+                </h4>
+
+                <div class="prediction-value">
+                    <span id="predictionValue">0</span>
+                    <span class="unit">minutes</span>
+                </div>
+
+                <p class="text-muted mb-0">
+                    Estimated time for this delivery
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+    <div class="text-center mt-4 text-muted">
+        <small>
+            Powered by Machine Learning & FastAPI
+        </small>
+    </div>
+
+</div>
+
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>

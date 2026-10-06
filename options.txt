@@ -1,0 +1,34 @@
+These are the options you have to add in frontend code and handle the capital , small letters
+
+
+traffic_mapping = ["Low"
+        "Medium"
+        "High"
+        "Jam"]
+
+type of orders options = [Type_of_order_Drinks', 'Type_of_order_Meal',
+       'Type_of_order_Snack']        
+        
+
+weather options = [Fog
+Stormy	
+Cloudy	
+Sandstorms	
+Windy	
+Sunny	]
+
+order options = [Snack,
+Meal	,
+Drinks,	
+Buffet]
+
+type of vechiles = [motorcycle	,
+scooter	,
+electric_scooter,
+bicycle]
+
+festival = [boolean: yes or no]
+
+types of city = [Metropolitian	,
+Urban,
+Semi-Urban]
