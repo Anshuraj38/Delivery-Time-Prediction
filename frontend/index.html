@@ -1,321 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Delivery Time Prediction</title>
-
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doorstep · Delivery time estimator</title>
+  <meta name="description" content="Estimate how many minutes a food delivery will take.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container py-5">
-
-    <!-- Header -->
-    <div class="text-center mb-5">
-        <h1 class="fw-bold">Delivery Time Prediction</h1>
-        <p class="text-muted">
-            Enter delivery details to predict the estimated delivery time.
-        </p>
+  <header class="top">
+    <a class="brand" href="./" aria-label="Doorstep home">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <rect width="26" height="26" rx="7" fill="currentColor"/>
+        <path d="M6 18c4-1 3-8 7-8s3 7 7 6" fill="none" stroke="#FFB22C" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span>Doorstep</span>
+    </a>
+    <div id="api-status" class="api-status" data-state="checking" role="status">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="api-status-text">Checking service</span>
     </div>
+  </header>
 
-    <div class="card shadow-lg border-0">
+  <main class="layout">
 
-        <div class="card-body p-4 p-md-5">
+    <section class="intro">
+      <h1>How long until it reaches the door?</h1>
+      <p>Describe the rider, the route and the conditions. The model estimates the delivery time in minutes.</p>
+    </section>
 
-            <form id="predictionForm">
+    <form id="predict-form" class="form" autocomplete="off">
 
-                <div class="row g-4">
-
-                    <!-- Delivery Person Age -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Delivery Person Age
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            id="age"
-                            placeholder="Example: 25"
-                            min="1"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- Delivery Person Rating -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Delivery Person Rating
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            id="rating"
-                            placeholder="Example: 4.5"
-                            min="1"
-                            max="5"
-                            step="0.1"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- Distance -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Distance (km)
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            id="distance"
-                            placeholder="Example: 5.2"
-                            min="0.1"
-                            max="19.9"
-                            step="0.1"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- Order Hour -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Order Hour
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            id="order_hour"
-                            placeholder="0 - 23"
-                            min="0"
-                            max="23"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- Weather -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Weather Conditions
-                        </label>
-
-                        <select class="form-select" id="weather" required>
-                            <option value="">Select weather</option>
-                            <option value="Fog">Fog</option>
-                            <option value="Stormy">Stormy</option>
-                            <option value="Cloudy">Cloudy</option>
-                            <option value="Sandstorms">Sandstorms</option>
-                            <option value="Windy">Windy</option>
-                            <option value="Sunny">Sunny</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Traffic -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Road Traffic Density
-                        </label>
-
-                        <select class="form-select" id="traffic" required>
-                            <option value="">Select traffic</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                            <option value="Jam">Jam</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Vehicle Condition -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Vehicle Condition
-                        </label>
-
-                        <select class="form-select" id="vehicle_condition" required>
-                            <option value="">Select condition</option>
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Type of Order -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Type of Order
-                        </label>
-
-                        <select class="form-select" id="type_of_order" required>
-                            <option value="">Select order type</option>
-                            <option value="Drinks">Drinks</option>
-                            <option value="Meal">Meal</option>
-                            <option value="Snack">Snack</option>
-                            <option value="Buffet">Buffet</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Type of Vehicle -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Type of Vehicle
-                        </label>
-
-                        <select class="form-select" id="type_of_vehicle" required>
-                            <option value="">Select vehicle</option>
-                            <option value="motorcycle">Motorcycle</option>
-                            <option value="scooter">Scooter</option>
-                            <option value="electric_scooter">Electric Scooter</option>
-                            <option value="bicycle">Bicycle</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Multiple Deliveries -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Multiple Deliveries
-                        </label>
-
-                        <select class="form-select" id="multiple_deliveries" required>
-                            <option value="">Select number</option>
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Festival -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Festival
-                        </label>
-
-                        <select class="form-select" id="festival" required>
-                            <option value="">Select option</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-
-
-                    <!-- City -->
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            City
-                        </label>
-
-                        <select class="form-select" id="city" required>
-                            <option value="">Select city type</option>
-                            <option value="Metropolitian">Metropolitian</option>
-                            <option value="Urban">Urban</option>
-                            <option value="Semi-Urban">Semi-Urban</option>
-                        </select>
-                    </div>
-
-                </div>
-
-
-                <!-- Predict Button -->
-                <div class="text-center mt-5">
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary btn-lg px-5"
-                        id="predictBtn"
-                    >
-                        Predict Delivery Time
-                    </button>
-
-                </div>
-
-            </form>
-
-
-            <!-- Loading -->
-            <div
-                id="loading"
-                class="text-center mt-4 d-none"
-            >
-                <div
-                    class="spinner-border text-primary"
-                    role="status"
-                ></div>
-
-                <p class="mt-2">
-                    Predicting delivery time...
-                </p>
-            </div>
-
-
-            <!-- Error -->
-            <div
-                id="errorMessage"
-                class="alert alert-danger mt-4 d-none"
-            ></div>
-
-
-            <!-- Result -->
-            <div
-                id="result"
-                class="result-box text-center mt-5 d-none"
-            >
-
-                <h4 class="text-muted">
-                    Estimated Delivery Time
-                </h4>
-
-                <div class="prediction-value">
-                    <span id="predictionValue">0</span>
-                    <span class="unit">minutes</span>
-                </div>
-
-                <p class="text-muted mb-0">
-                    Estimated time for this delivery
-                </p>
-
-            </div>
-
+      <section class="group" aria-labelledby="g-rider">
+        <h2 id="g-rider">Rider</h2>
+        <div class="fields">
+          <div class="field">
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" inputmode="numeric" min="1" max="100" step="1" value="28" required>
+          </div>
+          <fieldset class="field">
+            <legend>Rating</legend>
+            <div class="choices segmented" data-group="rating"></div>
+          </fieldset>
         </div>
+      </section>
 
-    </div>
+      <section class="group" aria-labelledby="g-trip">
+        <h2 id="g-trip">Trip</h2>
+        <div class="fields">
+          <div class="field wide">
+            <div class="label-row">
+              <label for="distance">Distance from restaurant to customer</label>
+              <output id="distance-out" for="distance">5.0 km</output>
+            </div>
+            <input id="distance" name="distance" class="slider" type="range" min="0.5" max="19.5" step="0.1" value="5" required>
+          </div>
+          <div class="field wide">
+            <div class="label-row">
+              <label for="hour">Time the order is placed</label>
+              <output id="hour-out" for="hour">7:00 PM</output>
+            </div>
+            <input id="hour" name="hour" class="slider" type="range" min="0" max="23" step="1" value="19" required>
+          </div>
+          <fieldset class="field wide">
+            <legend>City</legend>
+            <div class="choices chips" data-group="city"></div>
+          </fieldset>
+        </div>
+      </section>
 
+      <section class="group" aria-labelledby="g-road">
+        <h2 id="g-road">Road and weather</h2>
+        <div class="fields">
+          <fieldset class="field wide">
+            <legend>Traffic</legend>
+            <div class="choices segmented" data-group="traffic"></div>
+          </fieldset>
+          <fieldset class="field wide">
+            <legend>Weather</legend>
+            <div class="choices chips" data-group="weather"></div>
+          </fieldset>
+          <fieldset class="field wide">
+            <legend>Festival day (Diwali, Chhath and similar)</legend>
+            <div class="choices segmented compact" data-group="festival"></div>
+          </fieldset>
+        </div>
+      </section>
 
-    <!-- Footer -->
-    <div class="text-center mt-4 text-muted">
-        <small>
-            Powered by Machine Learning & FastAPI
-        </small>
-    </div>
+      <section class="group" aria-labelledby="g-order">
+        <h2 id="g-order">Vehicle and order</h2>
+        <div class="fields">
+          <fieldset class="field wide">
+            <legend>Vehicle</legend>
+            <div class="choices chips" data-group="vehicleType"></div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Vehicle condition (0 to 3)</legend>
+            <div class="choices segmented" data-group="condition"></div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Deliveries in one trip</legend>
+            <div class="choices segmented" data-group="multiple"></div>
+          </fieldset>
+          <fieldset class="field wide">
+            <legend>Order type</legend>
+            <div class="choices chips" data-group="orderType"></div>
+          </fieldset>
+        </div>
+      </section>
 
-</div>
+      <div class="actions">
+        <button type="submit" id="submit-btn" class="btn primary">Estimate delivery time</button>
+        <button type="reset" class="btn ghost">Reset</button>
+      </div>
+    </form>
 
+    <aside class="result" id="result" data-state="idle" aria-labelledby="result-title">
+      <h2 id="result-title">Estimated delivery time</h2>
 
-<!-- JavaScript -->
-<script src="script.js"></script>
+      <svg id="route" class="route" viewBox="0 0 420 190" role="img" aria-label="Route from restaurant to customer">
+        <g class="roads" fill="none" stroke-linecap="round">
+          <path d="M0 40H420M0 105H420M0 165H420M70 0V190M190 0V190M310 0V190"/>
+        </g>
+        <path id="route-path" class="route-base" d="M46 140C120 30 200 190 372 52" fill="none"/>
+        <path id="route-trail" class="route-trail" d="M46 140C120 30 200 190 372 52" fill="none"/>
 
+        <g class="stop" transform="translate(46 140)">
+          <rect x="-8" y="-8" width="16" height="16" rx="4"/>
+          <text x="0" y="28" text-anchor="middle">Restaurant</text>
+        </g>
+        <g class="stop dest" transform="translate(372 52)">
+          <circle r="9"/>
+          <circle r="3.5" class="core"/>
+          <text x="0" y="28" text-anchor="middle">Customer</text>
+        </g>
+
+        <g id="pin" class="pin" transform="translate(46 140)">
+          <circle class="pulse" r="10"/>
+          <circle class="body" r="8"/>
+        </g>
+      </svg>
+
+      <div class="readout">
+        <p class="minutes" aria-live="polite">
+          <span id="minutes-value">—</span><span class="unit" id="minutes-unit"></span>
+        </p>
+        <p id="summary" class="summary">Set the details, then choose Estimate delivery time.</p>
+      </div>
+
+      <dl class="facts" id="facts" hidden>
+        <div><dt>Distance</dt><dd id="fact-distance">—</dd></div>
+        <div><dt>Average pace</dt><dd id="fact-pace">—</dd></div>
+        <div><dt>Traffic</dt><dd id="fact-traffic">—</dd></div>
+      </dl>
+
+      <p id="message" class="message" role="alert" hidden></p>
+    </aside>
+
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

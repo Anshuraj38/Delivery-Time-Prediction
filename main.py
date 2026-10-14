@@ -24,13 +24,12 @@ app = FastAPI(
 # =========================================================
 
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://delivery-time-prediction-1-dat4.onrender.com/"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+CORSMiddleware,
+allow_origins=["*"],
+allow_credentials=True,
+allow_methods=["*"],
+allow_headers=["*"],
 )
-
 
 # =========================================================
 # 3. LOAD MODEL + SCALER + FEATURE COLUMNS
