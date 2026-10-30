@@ -8,7 +8,7 @@
    ========================================================== */
 
 const CONFIG = {
-  apiUrl: "http://127.0.0.1:8000",
+  apiUrl: "https://delivery-time-prediction-backend.onrender.com",
 
   choices: {
     rating: [1, 2, 3, 4, 5].map((n) => ({ value: n, label: String(n) })),
